@@ -1,0 +1,181 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using Jumoo.Simpily
+
+@{
+    if (!string.IsNullOrWhiteSpace(Request.QueryString["edit"]))
+    {
+        @Html.Partial("SimpilyForums/RenderPostEditor",
+                                Model.Content,
+                                new ViewDataDictionary(this.ViewData) { 
+                                        { "showTitle", false },
+                                        { "edit", true } 
+                                })
+        return;
+    }
+
+    if (Model.Content.Parent.DocumentTypeAlias == "SimpilyPost")
+    {
+        // if this post has a parent post, that's the page we
+        // want people to see (the full thread)
+        Response.Redirect(Model.Content.Parent.Url);
+    }
+}
+
+@{
+   
+    @Html.Partial("SimpilyForums/DisplayForumInfo", Model.Content.Parent)
+    
+    <div class="forum-post-thread">
+        <ul class="forum-thread">
+            @DisplayPost(Model.Content)
+            
+            @foreach(var reply in Model.Content.Children()
+                .Where(x => x.DocumentTypeAlias == "Simpilypost"))
+            {
+                @DisplayPost(reply, false);
+            }
+        </ul>
+
+        @* // if the forum and post are active, show the reply box. *@
+        @if( DoesForumAcceptPosts(Model.Content.Parent) && Model.Content.GetPropertyValue<bool>("allowReplies"))
+        {
+            @Html.Partial("SimpilyForums/RenderPostEditor",
+                                Model.Content,
+                                new ViewDataDictionary(this.ViewData) { { "showTitle", false} })
+        }
+    </div>
+}
+
+@helper DisplayPost(IPublishedContent post, bool showTitle = true)
+{
+    <li class="post-detail" id="post_@post.Id">
+        <div class="row">
+            <div class="col-xs-12">
+                @if (post.IsVisible())
+                {
+                    <div class="post-detail-info">
+                        <div class="post-author">
+                            @DisplayPostAuthor(post)
+                        </div>
+                    </div>
+
+                    <div class="post-detail-body">
+                        <div class="post-title">
+                            @if (showTitle)
+                            {
+                                <h3 id="@post.Id">
+                                    @post.GetPropertyValue("postTitle")
+                                </h3>
+                            }
+                            <div class="post-date">
+                                posted @ForumHelper.GetRelativeDate(post.CreateDate)
+                                @if (post.UpdateDate > post.CreateDate.AddSeconds(10))
+                                {
+                                    <span class="text-muted">
+                                        and edited @ForumHelper.GetRelativeDate(post.UpdateDate)
+                                    </span>
+                                }
+                                <a href="#@post.Id">#</a>
+                            </div>
+                        </div>
+
+                        <div class="post-body">
+                            @post.GetPropertyValue("postBody")
+                        </div>
+                    </div>
+                    <div class="post-detail-meta">
+                        @DisplayPostTools(post)
+                    </div>
+                }
+                else
+                {
+                    // hidden posts are deleted
+                    <div class="post-deleted">
+                        @if (post.GetPropertyValue<bool>("deletedByAuthor"))
+                        {
+                            <div class="alert alert-warning">post deleted by author</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">post has been removed</div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </li>
+}
+
+@helper DisplayPostAuthor(IPublishedContent post)
+{
+  var authorId = post.GetPropertyValue<int>("postAuthor", 0);
+  
+  if ( authorId > 0)
+  {
+      var author = Members.GetById(authorId);
+      if ( author != null)
+      {
+          // pre v7.2.1 - you can't do GetPropertyValue<string>("Email")
+          // on a member, see http://issues.umbraco.org/issue/U4-5456
+          string authorEmail = author.AsDynamic().Email;
+          
+          <span class="author-detail">
+              <img src="@ForumHelper.GravatarURL(authorEmail)" class="gravatar-image" />
+              @author.Name
+          </span>
+
+          return;
+      }
+  }
+
+    // fall back, to the string name, (then the umbraco user)
+    // this protects us should the member be deleted in umbraco
+    <span class="author-detail">
+        <img src="@ForumHelper.GravatarURL(string.Empty)" class="gravatar-image" />
+        @post.GetPropertyValue("postCreator", post.CreatorName)
+    </span>
+
+}
+
+@helper DisplayPostTools(IPublishedContent post)
+{
+    var authorId = post.GetPropertyValue<int>("postAuthor", 0);
+    if ( Members.GetCurrentMemberId() == authorId)
+    {
+        <ul class="post-tools">
+            <li>
+                <a class="post-delete" data-postid="@post.Id">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> delete
+                </a>
+            </li>
+            <li>
+                <a class="post-edit" href="@post.Url?edit=true">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> edit
+                </a>
+            </li>
+        </ul>
+    }
+}
+
+@functions {
+
+    public bool DoesForumAcceptPosts(IPublishedContent item)
+    {
+        // does recurising up get false?
+        if (item.GetPropertyValue<bool>("forumActive", true) == false)
+        {
+            return false;
+        }
+        
+        // thing is this forum may be active, but a parent forum may be off...
+        if (item.Parent.DocumentTypeAlias == "SimpilyForum")
+        {
+            // so if parent is forum go up to it
+            return DoesForumAcceptPosts(item.Parent);
+        }
+        
+        // here.. we have reached the top and not found a false (forum off)
+        // so it must be on...
+        return true;
+    }
+}

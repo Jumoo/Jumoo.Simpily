@@ -1,0 +1,71 @@
+@using SimpleAuth
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpleRegisterViewModel>
+
+@{
+    if (TempData["RegisterComplete"] != null && (bool)TempData["RegisterComplete"] == true)
+    {
+        var completeMessage = Umbraco.GetDictionaryValue("SimpleAuth.Register.Complete");
+
+        if (string.IsNullOrWhiteSpace(completeMessage))
+        {
+            <h2>Nearly Done</h2>
+            <p>
+                We have sent you an email,to verify your account, once you have done that you will be able to logon.
+            </p>
+        }
+        return;
+    }
+}
+
+
+@{
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+
+@using (Html.BeginUmbracoForm<SimpleAuthSurfaceController>("HandleRegister", null, new { @class = "form-horizontal forum-reply-form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(SimpleAuth.RegisterKey, true)
+    
+    <fieldset>
+        <legend>Register</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(m => Model.Name, new { @class = "control-label col-sm-3" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => Model.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => Model.Name)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => Model.EmailAddress, new { @class = "control-label col-sm-3" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => Model.EmailAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => Model.EmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => Model.Password, new { @class = "control-label col-sm-3" })
+            <div class="col-sm-9">
+                @Html.PasswordFor(m => Model.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => Model.Password)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => Model.ConfirmPassword, new { @class = "control-label col-sm-3" })
+            <div class="col-sm-9">
+                @Html.PasswordFor(m => Model.ConfirmPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => Model.ConfirmPassword)
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3">
+            <input type="submit" value="Register" class="btn btn-lg btn-primary" />
+        </div>
+
+
+    </fieldset>
+}

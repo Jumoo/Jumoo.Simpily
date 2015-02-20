@@ -1,0 +1,18 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+@{
+    if ( Members.IsLoggedIn())
+    {
+        <span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            @Members.GetCurrentMember().Name <a href="/logout">logout</a>
+        </span>
+    }
+    else
+    {
+        <span>
+            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            <a href="/login">login</a>
+        </span>
+    }
+}

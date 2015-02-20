@@ -1,0 +1,57 @@
+﻿﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ClientDependency.Core.Mvc;
+
+@{
+    Layout = null;
+    Html.RequiresCss("/css/simpilyforums.css");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@Umbraco.Field("forumName", altFieldAlias: "pageName") - Forums</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+
+    @Html.RenderCssHere()
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>Simpily Forums</h1>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                @Html.Partial("SimpilyForums/breadcrumb")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                @Umbraco.Field("bodyText")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    Simpily Forums a <a href="http://jumoo.uk/" class="jumoo">Jumoo</a> thingamabob for <a href="http://umbraco.com">umbraco</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    @Html.RenderJsHere()
+    @RenderSection("Scripts", false)
+</body>
+</html>

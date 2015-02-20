@@ -1,0 +1,17 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "SimpleAuth.cshtml";
+}
+
+@{
+    var resetGuid = Request.QueryString["resetGUID"];
+
+    if (string.IsNullOrWhiteSpace(resetGuid))
+    {
+        @Html.Action("RenderForgotPassword", "SimpleAuthSurface")
+    }
+    else
+    {
+        @Html.Action("RenderResetPassword", "SimpleAuthSurface")
+    }
+}

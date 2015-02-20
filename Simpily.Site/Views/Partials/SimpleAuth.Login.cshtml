@@ -1,0 +1,67 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpleLoginViewModel>
+@using SimpleAuth
+@using Umbraco.Web.Mvc
+
+@{
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+
+@if( !ViewData.ModelState.IsValid)
+{
+    var forgotPrompt = Umbraco.GetDictionaryValue("SimpleAuth.Login.ForgotPassword");
+    
+    if ( string.IsNullOrWhiteSpace(forgotPrompt))
+    { 
+        <h3>Forgotton your password?</h3>
+        <p>
+            some message ? 
+        </p>
+    }
+    else 
+    {
+        @Html.Raw(forgotPrompt)
+    }
+
+    @Html.ValidationSummary(SimpleAuth.LoginKey, true)
+    
+    <p>
+        <a href="@SimpleAuth.ResetUrl">Remind me</a>
+    </p>
+}
+
+
+@using (Html.BeginUmbracoForm<SimpleAuthSurfaceController>("HandleLogin", null, new { @class = "form-horizontal forum-reply-form" }))
+{
+    @Html.AntiForgeryToken()
+    @* @Html.ValidationSummary(SimpleAuth.LoginKey, true) *@
+    
+    
+    
+    <fieldset>
+        <legend>Login</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(m => Model.EmailAddress, new { @class = "control-label col-sm-3" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(m => Model.EmailAddress, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => Model.EmailAddress)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => Model.Password, new { @class = "control-label col-sm-3"})
+            <div class="col-sm-9">
+                @Html.PasswordFor(m => Model.Password, new { @class= "form-control"})
+                @Html.ValidationMessageFor(m => Model.Password)
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => Model.ReturnUrl)
+
+        <div class="col-sm-9 col-sm-offset-3">
+            <input type="submit" value="Login" class="btn btn-lg btn-primary" />
+        </div>
+
+</fieldset>
+}

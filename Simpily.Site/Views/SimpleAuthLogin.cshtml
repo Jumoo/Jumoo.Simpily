@@ -1,0 +1,12 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "SimpleAuth.cshtml";
+}
+
+
+@if (TempData["returnUrl"] != null)
+{
+    Response.Redirect((string)TempData["returnUrl"]);
+}
+
+@Html.Action("RenderLogin", "SimpleAuthSurface")

@@ -1,0 +1,20 @@
+﻿﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ClientDependency.Core.Mvc;
+
+@{
+    Layout = "SimpilyForums.cshtml";    
+    Html.RequiresCss("/css/simpilyforums.css");
+    
+}
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("SimpilyForums/DisplayThread")
+    </div>
+</div>
+
+@section Scripts {
+    <!--
+        <script src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+        <script src="/Scripts/JumooSimpily/Forums.js"></script>
+    -->
+}

@@ -1,0 +1,49 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using Jumoo.Simpily
+
+@*
+    lists all the child forums of this one. 
+    (uses the cache, to get post count and latest post - without having to
+        recurse everytime)
+*@
+
+@{
+    
+    var forums = Model.Content.Children().Where(x => x.IsVisible() && x.DocumentTypeAlias == "Simpilyforum");
+    
+    if ( forums.Any() )
+    {
+        <div class="forum-list">
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Posts</th>
+                        <th>Latest</th>
+                    </tr>
+                </thead>
+
+                @foreach(var forum in forums)
+                {
+                    var cacheInfo = forum.GetForumInfo();
+                    
+                    <tr>
+                        <td>
+                            <strong>
+                                <a href="@forum.Url">
+                                    @forum.GetPropertyValue("forumName", forum.Name)
+                                </a>
+                            </strong>
+                            <small>
+                                @forum.GetPropertyValue("forumIntro")
+                            </small>
+                        </td>
+                        <td>@cacheInfo.Count</td>
+                        <td>@ForumHelper.GetRelativeDate(cacheInfo.latestPost)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}

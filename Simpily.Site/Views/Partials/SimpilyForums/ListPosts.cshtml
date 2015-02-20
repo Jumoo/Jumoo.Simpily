@@ -1,0 +1,44 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using Jumoo.Simpily
+
+@{
+    var posts = Model.Content.Children()
+        .Where(x => x.IsVisible() && x.DocumentTypeAlias == "Simpilypost").ToContentSet();
+
+    if (posts.Any())
+    {
+        <div class="forum-posts">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Post</th>
+                        <th>Latest</th>
+                        <th>Replies</th>
+                    </tr>
+                </thead>
+
+                @foreach (var post in posts
+                    .OrderByDescending(x => x.GetForumInfo().latestPost)
+                    .OrderByDescending(x => x.GetPropertyValue<int>("stickyness", 0)))
+                {
+                    var cacheInfo = post.GetForumInfo();
+                    <tr class="post-summay">
+                        <th class="post-title">
+                            @if ( post.GetPropertyValue<int>("stickyness", 0) > 0 )
+                            {
+                                <span class="glyphicon glyphicon-star"></span>
+                            }
+                            <a href="@post.Url">@post.GetPropertyValue("postTitle")</a>
+                            <div class="post-summay-meta">
+                                started by @post.GetPropertyValue("postCreator", post.CreatorName)
+                                @ForumHelper.GetRelativeDate(post.CreateDate)
+                            </div>
+                        </th>
+                        <td class="post-last">@ForumHelper.GetRelativeDate(cacheInfo.latestPost)</td>
+                        <td class="post-count">@(cacheInfo.Count-1)</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+}

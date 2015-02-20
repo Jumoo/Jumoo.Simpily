@@ -1,0 +1,47 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ClientDependency.Core.Mvc
+
+@*
+    allows people to create a new post (if the forum permissions let them)
+*@
+
+@{
+
+    var create = Request.QueryString["create"];
+    
+    if ( Model.Content.GetPropertyValue<bool>("postAtRoot", false, false) 
+        && MemberCanPost(Model.Content) )
+    {
+        if (!string.IsNullOrWhiteSpace(create) && create == "true")
+        {
+            @Html.Partial("SimpilyForums/RenderPostEditor",
+                Model.Content,
+                new ViewDataDictionary(this.ViewData) { { "showTitle", true}})
+        }
+        else
+        {
+            <a href="?create=true" class="btn btn-lg btn-primary">Post</a>
+        }
+    }
+}
+
+
+@functions {
+
+    public bool MemberCanPost(IPublishedContent item)
+    {
+        if (!Members.IsLoggedIn())
+            return false;
+
+        var canPostGroups = item.GetPropertyValue<string>("canPostGroups", true);
+        
+        // default(blank list) is anyone can post
+        if (string.IsNullOrWhiteSpace(canPostGroups))
+            return true;
+        
+        // is the user a member of a group
+        var groups = canPostGroups.Split(',').Select(p => p.Trim()).ToList();
+        return Members.IsMemberAuthorized(allowGroups: groups);
+    }
+
+}

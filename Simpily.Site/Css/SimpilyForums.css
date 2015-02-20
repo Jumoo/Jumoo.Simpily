@@ -1,0 +1,128 @@
+﻿/*
+    stylesheet for forums..
+*/
+
+/* the box at the top that gives forum title and description*/
+.forum-info {
+    padding-bottom: 1em;
+}
+
+.forum-info .page-header {
+    padding:0;
+}
+
+.forum-info>.page-header>h2 {
+    padding: 0;
+    margin: 0;
+}
+
+
+.forum-list {
+
+}
+
+/* div around a table, listing posts...*/
+.forum-posts {
+
+}
+
+.forum-post-thread {
+
+}
+
+.forum-post-thread { 
+
+}
+
+/* post thread - styles */
+ul.forum-thread {
+    list-style: none;
+    padding: 0;
+}
+
+li.post-detail {
+    margin-bottom: 2em;
+    min-height: 80px;
+}
+
+/* layout of the three boxes (author, body, tools)*/
+.post-detail-info {
+    float: left;
+    width: 10%;
+    max-width: 90px;
+}
+
+.post-detail-body {
+    float: left;
+    width: 77%;
+    padding: 0 1em;
+}
+
+.post-detail-meta {
+    float: left;
+    width: 12%;
+}
+
+/* author box */
+.post-detail .post-author {
+    font-size: 0.8em;
+}
+
+.post-detail-info .post-author {
+    background-color: lightgray;
+    padding: 0.3em;
+    border-radius: 0.2em;
+    text-align: center;
+}
+
+.post-detail-info .gravatar-image {
+    width: 99%;
+    max-width: 80px;
+    display:block;
+    padding-bottom: 4px;
+    margin: 0 auto;
+}
+
+
+/* post body - top bar*/
+.post-title h3 {
+    margin: 0;
+    padding:0;
+}
+
+.post-detail .post-date {
+    font-size: 0.75em;
+    font-weight: normal;
+    color: #808080;
+}
+
+.post-body {
+    border-top: 1px solid lightgray;
+    padding-top: 0.5em;
+}
+
+
+/* rhs - tools */
+.post-detail-meta
+{
+    text-align: center;
+}
+
+.post-tools {
+    padding-top: 1.2em;
+    list-style: none;
+    text-align: left;
+}
+
+a.post-delete {
+    color: darkred;
+}
+
+a.post-edit {
+    color: darkgreen;
+}
+
+footer {padding: 3em 0 5em;margin-top:3em; background-color: #DBDBDB; font-size:0.8em;}
+footer .jumoo {font-family:Pacifico;font-weight:normal;}
+
+/* EDITOR PROPERTIES - PLEASE DON'T DELETE THIS LINE TO AVOID DUPLICATE PROPERTIES */

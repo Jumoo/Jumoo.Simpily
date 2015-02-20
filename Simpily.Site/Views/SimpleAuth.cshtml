@@ -1,0 +1,55 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ClientDependency.Core.Mvc;
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@Umbraco.Field("Title")</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    @Html.RenderCssHere()
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="pull-right">
+                    @Html.Partial("SimpleAuth.LoginStatus")
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h1>Simple Authentication</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                @Umbraco.Field("bodyText")
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    @Html.RenderJsHere()
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

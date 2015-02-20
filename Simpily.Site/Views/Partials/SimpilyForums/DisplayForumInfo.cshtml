@@ -1,0 +1,14 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+@*
+    displays the basic's of a forum (tite and intro)
+*@
+
+<div class="forum-info">
+    <div class="page-header">
+        <h2><a href="@Model.Content.Url">@Model.Content.GetPropertyValue("forumName", true)</a></h2>
+    </div>
+    <div class="forum-intro">
+        @Html.Raw(Model.Content.GetPropertyValue("forumIntro", true))
+    </div>
+</div>

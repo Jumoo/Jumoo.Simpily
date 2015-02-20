@@ -1,0 +1,27 @@
+﻿﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using ClientDependency.Core.Mvc;
+
+@{
+    Layout = "SimpilyForums.cshtml";
+    Html.RequiresCss("/css/simpilyforums.css");
+}
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("SimpilyForums/DisplayForumInfo")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("SimpilyForums/ListForums")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("SimpilyForums/ListPosts")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("SimpilyForums/CreateNewPost")
+    </div>
+</div>

@@ -1,0 +1,7 @@
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "SimpleAuth.cshtml";
+}
+
+@Html.Action("RenderVerifyEmail", "SimpleAuthSurface",
+                new { guid = Request.QueryString["verifyGUID"] })
