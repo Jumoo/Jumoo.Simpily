@@ -6,17 +6,16 @@ using Umbraco.Web.Mvc;
 
 namespace Jumoo.Simpily
 {
-    public delegate void ForumEventHandler(object sender, EventArgs e);
-    public delegate bool ForumPreEventHandler(object sender, EventArgs e);
+    public delegate void ForumEventHandler(IContent sender, SimpilyForumsEventArgs e);
+    public delegate bool ForumPreEventHandler(SimpilyForumsPostModel sender, SimpilyForumsEventArgs e);
 
     /// <summary>
     /// Summary description for SimpilyForumsController
     /// </summary>
     public class SimpilyForumsController : SurfaceController
     {
-
-        public event ForumEventHandler OnNewPost;
-        public event ForumEventHandler OnPostSaved;
+        public static event ForumPreEventHandler OnNewPost;
+        public static event ForumEventHandler OnPostSaved;
 
         [HttpPost]
         public ActionResult PostReply([Bind(Prefix="Reply")]SimpilyForumsPostModel model)
@@ -103,6 +102,9 @@ namespace Jumoo.Simpily
         // double check the current user can post to this forum...
         private bool CanPost(SimpilyForumsPostModel model)
         {
+            if (!Members.IsLoggedIn())
+                return false;
+
             return true;
         }
 
@@ -124,6 +126,11 @@ namespace Jumoo.Simpily
 
             return !e.Cancel;
         }
+    }
+
+    public static class SimpilyForumEvents
+    {
+
     }
 
     public class SimpilyForumsEventArgs : EventArgs
