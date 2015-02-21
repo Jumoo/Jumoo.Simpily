@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
-
+using Umbraco.Web;
 
 namespace Jumoo.Simpily
 {
@@ -105,7 +105,24 @@ namespace Jumoo.Simpily
             if (!Members.IsLoggedIn())
                 return false;
 
-            return true;
+            if ( model.ParentId > 0 ) 
+            {
+                var parent = Umbraco.TypedContent(model.ParentId);
+                if ( parent != null )
+                {
+                    var canPostGroups = parent.GetPropertyValue<string>("canPostGroup", true);
+
+                    // default is any one logged on...
+                    if (string.IsNullOrWhiteSpace(canPostGroups))
+                        return true;
+
+                    // is the user in any of those groups ?
+                    var groups = canPostGroups.Split(',');
+                    return Members.IsMemberAuthorized(allowGroups: groups);
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
