@@ -104,7 +104,7 @@ namespace Jumoo.Simpily
         {
             if (!Members.IsLoggedIn())
                 return false;
-
+            
             if ( model.ParentId > 0 ) 
             {
                 var parent = Umbraco.TypedContent(model.ParentId);
