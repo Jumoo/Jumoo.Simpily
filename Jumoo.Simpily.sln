@@ -24,13 +24,22 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Simpily.Site", "http://loca
 		SlnRelativePath = "Simpily.Site\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jumoo.Simpily.AuthSetup", "Jumoo.Simpily.AuthSetup\Jumoo.Simpily.AuthSetup.csproj", "{F2F8BE34-3A03-4B8D-8525-AC7A93F4340B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A06208A8-9294-42F9-A106-62001CD51599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A06208A8-9294-42F9-A106-62001CD51599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A06208A8-9294-42F9-A106-62001CD51599}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A06208A8-9294-42F9-A106-62001CD51599}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{F2F8BE34-3A03-4B8D-8525-AC7A93F4340B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F8BE34-3A03-4B8D-8525-AC7A93F4340B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F8BE34-3A03-4B8D-8525-AC7A93F4340B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F8BE34-3A03-4B8D-8525-AC7A93F4340B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
