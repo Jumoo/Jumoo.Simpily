@@ -4,10 +4,12 @@
 @{
     if (!string.IsNullOrWhiteSpace(Request.QueryString["edit"]))
     {
+        var showTitle = Model.Content.Parent.DocumentTypeAlias == "Simpilyforum";
+
         @Html.Partial("SimpilyForums/RenderPostEditor",
                                 Model.Content,
                                 new ViewDataDictionary(this.ViewData) { 
-                                        { "showTitle", false },
+                                        { "showTitle", showTitle},
                                         { "edit", true } 
                                 })
         return;
