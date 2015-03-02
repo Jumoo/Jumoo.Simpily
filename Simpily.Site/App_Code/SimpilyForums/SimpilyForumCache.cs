@@ -17,7 +17,13 @@ using Umbraco.Web;
 using Umbraco.Web.Models;
 using System.Web.Caching;
 
+using Examine;
+using Examine.SearchCriteria;
+using Examine.LuceneEngine.SearchCriteria;
+
 using System.Diagnostics;
+using System.Text;
+using System.Globalization;
 
 namespace Jumoo.Simpily
 {
@@ -99,6 +105,59 @@ namespace Jumoo.Simpily
 
     public static class SimpliyForumCache 
     {
+        /// <summary>
+        ///  Get the Forum Info - using examine, because that can be faster when 
+        ///  there are lots and lots of posts - although i've yet to see it 
+        ///  really get faster than the traverse method (yet)
+        /// </summary>
+        /// <param name="useExamine">true to use examine</param>
+        public static SimpilyForumCacheItem GetForumInfo(this IPublishedContent item, bool useExamine)
+        {
+            if (useExamine == false)
+                return GetForumInfo(item);
+
+            var cacheName = string.Format("simpilyforum_{0}", item.Id);
+            var cache = UmbracoContext.Current.Application.ApplicationCache;
+            var forumInfo = cache.GetCacheItem<SimpilyForumCacheItem>(cacheName);
+
+            if (forumInfo != null)
+                return forumInfo;
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            
+            forumInfo = new SimpilyForumCacheItem();
+             
+
+            // examine cache - because that's faster ? 
+            var searcher = ExamineManager.Instance.SearchProviderCollection["InternalSearcher"];
+            var searchCriteria = searcher.CreateSearchCriteria(UmbracoExamine.IndexTypes.Content);
+
+            var query = new StringBuilder();
+            query.AppendFormat("-{0}:1 ", "umbracoNaviHide");
+            query.AppendFormat("+__NodeTypeAlias:simpilypost +path:\\-1*{0}*", item.Id);
+
+            var filter = searchCriteria.RawQuery(query.ToString());
+            var results = searcher.Search(filter).OrderByDescending(x => x.Fields["updateDate"]);
+
+            forumInfo.Count = results.ToList().Count;
+            forumInfo.latestPost = DateTime.MinValue;
+
+            if ( results.Any() )
+            {
+                var update = DateTime.ParseExact(results.First().Fields["updateDate"], "yyyyMMddHHmmssfff", CultureInfo.CurrentCulture);
+                if (update > DateTime.MinValue)
+                   forumInfo.latestPost = update; 
+            }
+            cache.InsertCacheItem<SimpilyForumCacheItem>(cacheName, CacheItemPriority.Default, () => forumInfo);
+
+            sw.Stop();
+            LogHelper.Info<SimpilyForumCacheHandler>("Updated Cache (using Examine) for {0} [{1}] found {2} items in {3}ms",
+                () => item.Name, () => item.Id, () => forumInfo.Count, () => sw.ElapsedMilliseconds);
+
+            return forumInfo;
+        }
+
         public static SimpilyForumCacheItem GetForumInfo(this IPublishedContent item)
         {
             var cacheName = string.Format("simpilyforum_{0}", item.Id);
@@ -126,7 +185,7 @@ namespace Jumoo.Simpily
             cache.InsertCacheItem<SimpilyForumCacheItem>(cacheName, CacheItemPriority.Default, () => forumInfo);
 
             sw.Stop();
-            LogHelper.Info<SimpilyForumCacheHandler>("Updated Cache for {0} [{1}] found {2} items in {2}ms",
+            LogHelper.Info<SimpilyForumCacheHandler>("Updated Cache for {0} [{1}] found {2} items in {3}ms",
                 () => item.Name, () => item.Id, ()=> forumInfo.Count, ()=> sw.ElapsedMilliseconds);
 
             return forumInfo;
