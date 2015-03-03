@@ -130,7 +130,7 @@ namespace Jumoo.Simpily
              
 
             // examine cache - because that's faster ? 
-            var searcher = ExamineManager.Instance.SearchProviderCollection["ExternalSearcher"];
+            var searcher = ExamineManager.Instance.SearchProviderCollection["InternalSearcher"];
             var searchCriteria = searcher.CreateSearchCriteria(UmbracoExamine.IndexTypes.Content);
 
             var query = new StringBuilder();
@@ -148,6 +148,11 @@ namespace Jumoo.Simpily
                 var update = DateTime.ParseExact(results.First().Fields["updateDate"], "yyyyMMddHHmmssfff", CultureInfo.CurrentCulture);
                 if (update > DateTime.MinValue)
                    forumInfo.latestPost = update; 
+
+                foreach(var field in results.First().Fields)
+                {
+                    LogHelper.Info<SimpilyForumCacheHandler>("Field: {0} {1}", () => field.Key, ()=> field.Value);
+                }
             }
             cache.InsertCacheItem<SimpilyForumCacheItem>(cacheName, CacheItemPriority.Default, () => forumInfo);
 
