@@ -130,7 +130,7 @@ namespace Jumoo.Simpily
              
 
             // examine cache - because that's faster ? 
-            var searcher = ExamineManager.Instance.SearchProviderCollection["InternalSearcher"];
+            var searcher = ExamineManager.Instance.SearchProviderCollection["ExternalSearcher"];
             var searchCriteria = searcher.CreateSearchCriteria(UmbracoExamine.IndexTypes.Content);
 
             var query = new StringBuilder();
