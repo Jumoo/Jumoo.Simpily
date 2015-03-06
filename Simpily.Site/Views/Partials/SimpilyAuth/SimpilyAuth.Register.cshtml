@@ -1,5 +1,5 @@
-@using SimpleAuth
-@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpleRegisterViewModel>
+@using SimpilyAuth
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpilyRegisterViewModel>
 
 @{
     if (TempData["RegisterComplete"] != null && (bool)TempData["RegisterComplete"] == true)
@@ -23,7 +23,7 @@
     Html.EnableUnobtrusiveJavaScript(true);
 }
 
-@using (Html.BeginUmbracoForm<SimpleAuthSurfaceController>("HandleRegister", null, new { @class = "form-horizontal forum-reply-form" }))
+@using (Html.BeginUmbracoForm<SimpilyAuthSurfaceController>("HandleRegister", null, new { @class = "form-horizontal forum-reply-form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(SimpleAuth.RegisterKey, true)

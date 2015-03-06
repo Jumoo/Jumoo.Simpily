@@ -1,5 +1,5 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpleLoginViewModel>
-@using SimpleAuth
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<SimpilyLoginViewModel>
+@using SimpilyAuth
 @using Umbraco.Web.Mvc
 
 @{
@@ -23,15 +23,15 @@
         @Html.Raw(forgotPrompt)
     }
 
-    @Html.ValidationSummary(SimpleAuth.LoginKey, true)
+    @Html.ValidationSummary(SimpilyAuth.LoginKey, true)
     
     <p>
-        <a href="@SimpleAuth.ResetUrl">Remind me</a>
+        <a href="@SimpilyAuth.ResetUrl">Remind me</a>
     </p>
 }
 
 
-@using (Html.BeginUmbracoForm<SimpleAuthSurfaceController>("HandleLogin", null, new { @class = "form-horizontal forum-reply-form" }))
+@using (Html.BeginUmbracoForm<SimpilyAuthSurfaceController>("HandleLogin", null, new { @class = "form-horizontal forum-reply-form" }))
 {
     @Html.AntiForgeryToken()
     @* @Html.ValidationSummary(SimpleAuth.LoginKey, true) *@

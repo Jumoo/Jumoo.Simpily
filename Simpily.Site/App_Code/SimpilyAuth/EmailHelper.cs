@@ -29,7 +29,7 @@ public class EmailHelper
             message.Subject = "Reset your password";
 
             string baseURL = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.AbsolutePath, string.Empty);
-            var resetUrl = baseURL + SimpleAuth.SimpleAuth.ResetUrl + "?resetGUID=" + guid;
+            var resetUrl = baseURL + SimpilyAuth.SimpilyAuth.ResetUrl + "?resetGUID=" + guid;
 
             var messageBody = new StringBuilder();
 
@@ -62,7 +62,7 @@ public class EmailHelper
             message.Subject = "Verifiy your account";
 
             string baseURL = HttpContext.Current.Request.Url.AbsoluteUri.Replace(HttpContext.Current.Request.Url.AbsolutePath, string.Empty);
-            var resetUrl = baseURL + SimpleAuth.SimpleAuth.VerifyUrl + "?verifyGUID=" + guid;
+            var resetUrl = baseURL + SimpilyAuth.SimpilyAuth.VerifyUrl + "?verifyGUID=" + guid;
 
             var messageBody = new StringBuilder();
 

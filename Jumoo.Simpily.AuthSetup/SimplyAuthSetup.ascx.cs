@@ -53,35 +53,35 @@ namespace Jumoo.Simpily.AuthSetup
             }
 
             contentStatus.Append("<li>Creating Login page: ");
-            if (CreateContentNode("login", "Simpleauthlogin", rootNode, "login", "Please login", _cs))
+            if (CreateContentNode("login", "SimpilyAuthLogin", rootNode, "login", "Please login", _cs))
             {
                 contentStatus.Append("<strong>done</strong>");
             }
             contentStatus.Append("</li>");
 
             contentStatus.Append("<li>Creating Logout page: ");
-            if (CreateContentNode("logout", "Simpleauthlogout", rootNode, "logout", "Logout", _cs))
+            if (CreateContentNode("logout", "SimpilyAuthLogout", rootNode, "logout", "Logout", _cs))
             {
                 contentStatus.Append("<strong>done</strong>");
             }
             contentStatus.Append("</li>");
 
             contentStatus.Append("<li>Creating Register page: ");
-            if (CreateContentNode("register", "Simpleauthregister", rootNode, "Register", "Register for an account", _cs))
+            if (CreateContentNode("register", "SimpilyAuthRegister", rootNode, "Register", "Register for an account", _cs))
             {
                 contentStatus.Append("<strong>done</strong>");
             }
             contentStatus.Append("</li>");
 
             contentStatus.Append("<li>Creating Reset page: ");
-            if (CreateContentNode("reset", "Simpleauthreset", rootNode, "Reset your password", "Please login", _cs))
+            if (CreateContentNode("reset", "SimpilyAuthReset", rootNode, "Reset your password", "Please login", _cs))
             {
                 contentStatus.Append("<strong>done</strong>");
             }
             contentStatus.Append("</li>");
 
             contentStatus.Append("<li>Creating Verify page: ");
-            if (CreateContentNode("verify", "Simpleauthverify", rootNode, "verify", "Verify your account", _cs))
+            if (CreateContentNode("verify", "SimpilyAuthVerify", rootNode, "verify", "Verify your account", _cs))
             {
                 contentStatus.Append("<strong>done</strong>");
             }

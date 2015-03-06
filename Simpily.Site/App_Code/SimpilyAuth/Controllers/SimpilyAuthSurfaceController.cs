@@ -12,32 +12,32 @@ using Umbraco.Web.Security;
 using Umbraco.Core.Models;
 using Umbraco.Core.Logging;
 
-namespace SimpleAuth
+namespace SimpilyAuth
 {
     /// <summary>
     /// Summary description for SimpleAuthSurfaceController
     /// </summary>
-    public class SimpleAuthSurfaceController : SurfaceController
+    public class SimpilyAuthSurfaceController : SurfaceController
     {
         public ActionResult RenderLogin()
         {
-            SimpleLoginViewModel login = new SimpleLoginViewModel();
+            SimpilyLoginViewModel login = new SimpilyLoginViewModel();
 
 
-            LogHelper.Info<SimpleAuthSurfaceController>("Login URL: {0}", () => HttpContext.Request.Url.AbsolutePath);
+            LogHelper.Info<SimpilyAuthSurfaceController>("Login URL: {0}", () => HttpContext.Request.Url.AbsolutePath);
 
             login.ReturnUrl = HttpContext.Request.Url.ToString() ;
-            if ( HttpContext.Request.Url.AbsolutePath == SimpleAuth.LoginUrl)
+            if ( HttpContext.Request.Url.AbsolutePath == SimpilyAuth.LoginUrl)
             {
                 login.ReturnUrl = "/";
             }
 
-            return PartialView(SimpleAuth.LoginView, login);
+            return PartialView(SimpilyAuth.LoginView, login);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleLogin(SimpleLoginViewModel model)
+        public ActionResult HandleLogin(SimpilyLoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace SimpleAuth
 
                     if (member != null)
                     {
-                        if (member.GetPropertyValue<bool>(SimpleAuth.AccountVerifiedProperty, false, false))
+                        if (member.GetPropertyValue<bool>(SimpilyAuth.AccountVerifiedProperty, false, false))
                         {
                             // a valid and verified user here be!
                             TempData["returnUrl"] = model.ReturnUrl;
@@ -71,7 +71,7 @@ namespace SimpleAuth
                         else
                         {
                             // we need to validate this account before they can logon.
-                            ModelState.AddModelError(SimpleAuth.LoginKey, 
+                            ModelState.AddModelError(SimpilyAuth.LoginKey, 
                                 GetDictionaryOrDefault("SimpleAuth.Login.NotVerified", "Email has not been verified"));
 
                             membershipHelper.Logout();
@@ -82,14 +82,14 @@ namespace SimpleAuth
                     else
                     {
                         // can't find the user...?
-                        ModelState.AddModelError(SimpleAuth.LoginKey, 
+                        ModelState.AddModelError(SimpilyAuth.LoginKey, 
                             GetDictionaryOrDefault("SimpleAuth.Login.NoUser", "Invalid Details"));
                     }
                 }
                 else
                 {
                     // can't login this person...
-                    ModelState.AddModelError(SimpleAuth.LoginKey, 
+                    ModelState.AddModelError(SimpilyAuth.LoginKey, 
                         GetDictionaryOrDefault("SimpleAuth.Login.LoginFail","Invalid Details"));
                 }
 
@@ -97,7 +97,7 @@ namespace SimpleAuth
             catch (Exception ex)
             {
                 // somethig big time went boom...
-                ModelState.AddModelError(SimpleAuth.LoginKey, "Error logging on" + ex.ToString());
+                ModelState.AddModelError(SimpilyAuth.LoginKey, "Error logging on" + ex.ToString());
             }
 
             return CurrentUmbracoPage();
@@ -121,17 +121,17 @@ namespace SimpleAuth
 
         public ActionResult RenderForgotPassword()
         {
-            return PartialView(SimpleAuth.ForgotPasswordView, new SimpleForgotPasswordModel());
+            return PartialView(SimpilyAuth.ForgotPasswordView, new SimpilyForgotPasswordModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleForgotPassword(SimpleForgotPasswordModel model)
+        public ActionResult HandleForgotPassword(SimpilyForgotPasswordModel model)
         {
             TempData["ResetSent"] = false;
             if (!ModelState.IsValid)
             {
-                return PartialView(SimpleAuth.ForgotPasswordView, model);
+                return PartialView(SimpilyAuth.ForgotPasswordView, model);
             }
 
             // var membershipHelper = new MembershipHelper(UmbracoContext.Current);
@@ -147,7 +147,7 @@ namespace SimpleAuth
 
                 // member.GetPropertyValue("resetGuid") = expires.ToString("ddMMyyyyHmmssFFFF");
 
-                member.SetValue(SimpleAuth.ResetRequestGuidPropery, expires.ToString("ddMMyyyyHmmssFFFF"));
+                member.SetValue(SimpilyAuth.ResetRequestGuidPropery, expires.ToString("ddMMyyyyHmmssFFFF"));
                 memberService.Save(member);
 
                 // send email....
@@ -158,9 +158,9 @@ namespace SimpleAuth
             }
             else
             {
-                ModelState.AddModelError(SimpleAuth.ForgotPasswordKey, 
+                ModelState.AddModelError(SimpilyAuth.ForgotPasswordKey, 
                     GetDictionaryOrDefault("SimpleAuth.Reset.NoUser", "No user found"));
-                return PartialView(SimpleAuth.ForgotPasswordView);
+                return PartialView(SimpilyAuth.ForgotPasswordView);
             }
 
             return CurrentUmbracoPage();
@@ -169,12 +169,12 @@ namespace SimpleAuth
 
         public ActionResult RenderResetPassword()
         {
-            return PartialView(SimpleAuth.ResetPasswordView, new SimplePasswordResetModel());
+            return PartialView(SimpilyAuth.ResetPasswordView, new SimpilyPasswordResetModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleResetPassword(SimplePasswordResetModel model)
+        public ActionResult HandleResetPassword(SimpilyPasswordResetModel model)
         {
             TempData["Success"] = false;
 
@@ -195,7 +195,7 @@ namespace SimpleAuth
 
                     if (!string.IsNullOrWhiteSpace(resetGuid))
                     {
-                        if (member.GetValue<string>(SimpleAuth.ResetRequestGuidPropery) == resetGuid)
+                        if (member.GetValue<string>(SimpilyAuth.ResetRequestGuidPropery) == resetGuid)
                         {
                             // ok so the match. check to see if it hasn't expired...
 
@@ -206,7 +206,7 @@ namespace SimpleAuth
                             {
                                 memberService.SavePassword(member, model.Password);
 
-                                member.SetValue(SimpleAuth.ResetRequestGuidPropery, string.Empty);
+                                member.SetValue(SimpilyAuth.ResetRequestGuidPropery, string.Empty);
                                 memberService.Save(member);
 
                                 TempData["Success"] = true;
@@ -214,32 +214,32 @@ namespace SimpleAuth
                             }
                             else
                             {
-                                ModelState.AddModelError(SimpleAuth.ResetPasswordKey,
+                                ModelState.AddModelError(SimpilyAuth.ResetPasswordKey,
                                     GetDictionaryOrDefault("SimpleAuth.Reset.Expired", "The reset request has expired"));
                                 return CurrentUmbracoPage();
                             }
                         }
                         else
                         {
-                            ModelState.AddModelError(SimpleAuth.ResetPasswordKey, 
+                            ModelState.AddModelError(SimpilyAuth.ResetPasswordKey, 
                                 GetDictionaryOrDefault("SimpleAuth.Reset.NoRequest", "No reset request has been found"));
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError(SimpleAuth.ResetPasswordKey, 
+                        ModelState.AddModelError(SimpilyAuth.ResetPasswordKey, 
                             GetDictionaryOrDefault("SimpleAuth.Reset.NoAccount", "Cannot find account"));
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError(SimpleAuth.ResetPasswordKey,
+                    ModelState.AddModelError(SimpilyAuth.ResetPasswordKey,
                         GetDictionaryOrDefault("SimpleAuth.Reset.NoAccount", "Cannot find account"));
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(SimpleAuth.ResetPasswordKey, "Error Resetting Password: " + ex.Message);
+                ModelState.AddModelError(SimpilyAuth.ResetPasswordKey, "Error Resetting Password: " + ex.Message);
             }
 
             return CurrentUmbracoPage();
@@ -247,12 +247,12 @@ namespace SimpleAuth
 
         public ActionResult RenderRegister()
         {
-            return PartialView(SimpleAuth.RegisterView, new SimpleRegisterViewModel());
+            return PartialView(SimpilyAuth.RegisterView, new SimpilyRegisterViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult HandleRegister(SimpleRegisterViewModel model)
+        public ActionResult HandleRegister(SimpilyRegisterViewModel model)
         {
             TempData["RegisterComplete"] = false;
 
@@ -265,20 +265,20 @@ namespace SimpleAuth
 
             if ( EmailAddressExists(model.EmailAddress ))
             {
-                ModelState.AddModelError(SimpleAuth.RegisterKey,
+                ModelState.AddModelError(SimpilyAuth.RegisterKey,
                     GetDictionaryOrDefault("SimpleAuth.Register.ExistingEmail", "Email Address is already in use"));
                 return CurrentUmbracoPage();
             }
 
             if ( !IsValidEmailDomain(model.EmailAddress ))
             {
-                ModelState.AddModelError(SimpleAuth.RegisterKey, 
+                ModelState.AddModelError(SimpilyAuth.RegisterKey, 
                     GetDictionaryOrDefault("SimpleAuth.Register.InvalidDomain", "You cannot register for this site with that email address"));
                 return CurrentUmbracoPage();
             }
 
             var memberTypeService = ApplicationContext.Services.MemberTypeService;
-            var memberType = memberTypeService.Get(SimpleAuth.NewAccountMemberType);
+            var memberType = memberTypeService.Get(SimpilyAuth.NewAccountMemberType);
 
             try
             {
@@ -287,7 +287,7 @@ namespace SimpleAuth
 
                 memberService.SavePassword(newMember, model.Password);
 
-                newMember.SetValue(SimpleAuth.AccountVerifiedProperty, false);
+                newMember.SetValue(SimpilyAuth.AccountVerifiedProperty, false);
                 // newMember.SetValue("profileUrl", newMember.id);
 
                 memberService.Save(newMember);
@@ -305,7 +305,7 @@ namespace SimpleAuth
                         var memberGroup = _mgs.GetByName(group);
                         if (memberGroup != null)
                         {
-                            LogHelper.Info<SimpleAuthSurfaceController>("Adding user to group", () => group);
+                            LogHelper.Info<SimpilyAuthSurfaceController>("Adding user to group", () => group);
                             memberService.AssignRole(newMember.Id, group);
                         }
                     }
@@ -314,7 +314,7 @@ namespace SimpleAuth
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(SimpleAuth.RegisterKey, "Error creating account:" + ex.ToString());
+                ModelState.AddModelError(SimpilyAuth.RegisterKey, "Error creating account:" + ex.ToString());
                 return CurrentUmbracoPage();
             }
 
@@ -322,7 +322,7 @@ namespace SimpleAuth
             var member = memberService.GetByEmail(model.EmailAddress);
             if (member != null)
             {
-                member.SetValue(SimpleAuth.AccountJoinedDateProperty, DateTime.Now.ToString("dd-MMM-yyyy @ HH:mm:ss"));
+                member.SetValue(SimpilyAuth.AccountJoinedDateProperty, DateTime.Now.ToString("dd-MMM-yyyy @ HH:mm:ss"));
                 memberService.Save(member);
 
                 // send out the email (usethe user key as the guid)
@@ -337,7 +337,7 @@ namespace SimpleAuth
 
         public ActionResult RenderVerifyEmail(string guid)
         {
-            LogHelper.Info<SimpleAuthSurfaceController>("Verifiing: {0}", () => guid);
+            LogHelper.Info<SimpilyAuthSurfaceController>("Verifiing: {0}", () => guid);
 
             var memberService = ApplicationContext.Services.MemberService;
 
@@ -348,7 +348,7 @@ namespace SimpleAuth
 
                 if (member != null)
                 {
-                    member.SetValue(SimpleAuth.AccountVerifiedProperty, true);
+                    member.SetValue(SimpilyAuth.AccountVerifiedProperty, true);
                     memberService.Save(member);
                     return Content("Account Verified");
                 }
@@ -397,13 +397,13 @@ namespace SimpleAuth
             var whitelist = CurrentPage.GetPropertyValue<string>("domainWhitelist", "").ToLower();
             var blacklist = CurrentPage.GetPropertyValue<string>("domainBlacklist", "").ToLower();
 
-            LogHelper.Info<SimpleAuthSurfaceController>("Domain WhiteList: {0}", () => whitelist);
-            LogHelper.Info<SimpleAuthSurfaceController>("Domain Blacklist: {0}", () => blacklist);
+            LogHelper.Info<SimpilyAuthSurfaceController>("Domain WhiteList: {0}", () => whitelist);
+            LogHelper.Info<SimpilyAuthSurfaceController>("Domain Blacklist: {0}", () => blacklist);
 
             if (emailAddress.Contains("@"))
             {
                 var domain = emailAddress.Substring(emailAddress.IndexOf("@")).ToLower();
-                LogHelper.Info<SimpleAuthSurfaceController>("Domain Check: {0}", () => domain);
+                LogHelper.Info<SimpilyAuthSurfaceController>("Domain Check: {0}", () => domain);
 
                 if (!string.IsNullOrWhiteSpace(whitelist) && !whitelist.Contains(domain))
                 {
@@ -433,7 +433,7 @@ namespace SimpleAuth
 
         private string GetDictionaryOrDefault(string key, string defaultValue)
         {
-            LogHelper.Info<SimpleAuthSurfaceController>("Getting Dictionary Value: {0} {1}", () => key, () => defaultValue);
+            LogHelper.Info<SimpilyAuthSurfaceController>("Getting Dictionary Value: {0} {1}", () => key, () => defaultValue);
 
             var dictionaryValue = Umbraco.GetDictionaryValue(key);
             if ( string.IsNullOrEmpty(dictionaryValue))
@@ -441,40 +441,5 @@ namespace SimpleAuth
 
             return dictionaryValue;
         }
-    }
-
-    /// <summary>
-    ///  constants for view names and keys, to reduce my fat fingers.
-    /// </summary>
-    public static class SimpleAuth
-    {
-        public const string ForgotPasswordView = "SimpleAuth.ForgotPassword";
-        public const string ForgotPasswordKey = "ForgotPasswordForm";
-
-        public const string LoginView = "SimpleAuth.Login";
-        public const string LoginKey = "LoginForm";
-
-        public const string ResetPasswordView = "SimpleAuth.ResetPassword";
-        public const string ResetPasswordKey = "ResetPasswordForm";
-
-        public const string RegisterView = "SimpleAuth.Register";
-        public const string RegisterKey = "RegisterForm";
-
-        /// <summary>
-        ///  properties on the member ....
-        /// </summary>
-
-        public const string ResetRequestGuidPropery = "resetGuid";
-        public const string AccountVerifiedProperty = "hasVerifiedAccount";
-        public const string AccountJoinedDateProperty = "joinedDate";
-        // public const string MemberDisplayNameProperty = "displayName";
-
-        public const string NewAccountMemberType = "Member";
-
-        public const string LoginUrl = "/login/";
-        public const string ResetUrl = "/reset/";
-        public const string RegisterUrl = "/register/";
-        public const string VerifyUrl = "/verify/";
-
     }
 }

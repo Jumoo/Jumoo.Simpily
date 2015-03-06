@@ -1,4 +1,4 @@
-@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
     Layout = "SimpleAuth.cshtml";
 }
@@ -9,4 +9,4 @@
     Response.Redirect((string)TempData["returnUrl"]);
 }
 
-@Html.Action("RenderLogin", "SimpleAuthSurface")
+@Html.Action("RenderLogin", "SimpilyAuthSurface")

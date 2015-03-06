@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SimplyAuthSetup.ascx.cs" Inherits="Jumoo.Simpily.AuthSetup.SimplyAuthSetup" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="SimpilyAuthSetup.ascx.cs" Inherits="App_Plugins_SimpilyAuth_SimpilyAuthSetup" %>
 <div class="row">
     <div class="span12">
         <div class="page-header">

@@ -7,9 +7,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace SimpleAuth
+namespace SimpilyAuth
 {
-    public class SimpleLoginViewModel
+    public class SimpilyLoginViewModel
     {
         [DisplayName("Email Address")]
         [Required(ErrorMessage = "please enter your email address")]
@@ -24,7 +24,7 @@ namespace SimpleAuth
         public string ReturnUrl { get; set; }
     }
 
-    public class SimpleForgotPasswordModel
+    public class SimpilyForgotPasswordModel
     {
         [DisplayName("Email Address")]
         [Required(ErrorMessage = "Please enter your email address")]
@@ -32,7 +32,7 @@ namespace SimpleAuth
         public string EmailAddress { get; set; }
     }
 
-    public class SimplePasswordResetModel
+    public class SimpilyPasswordResetModel
     {
         [DisplayName("Email Address")]
         [Required(ErrorMessage = "Please enter your email address")]
@@ -49,7 +49,7 @@ namespace SimpleAuth
         public string ConfirmPassword { get; set; }
     }
 
-    public class SimpleRegisterViewModel
+    public class SimpilyRegisterViewModel
     {
         [DisplayName("Name")]
         [Required(ErrorMessage = "Enter your name")]
