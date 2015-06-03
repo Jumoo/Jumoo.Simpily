@@ -150,7 +150,7 @@ public class ForumNotificationMgr : ApplicationEventHandler
         }
         catch (Exception ex)
         {
-            LogHelper.Info<ForumNotificationMgr>("Failed to send the email - probibly because email isn't configured for this site\n {0}", ()=> ex.ToString());
+            LogHelper.Info<ForumNotificationMgr>("Failed to send the email - probably because email isn't configured for this site\n {0}", ()=> ex.ToString());
         }
     }
 
