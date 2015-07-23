@@ -71,6 +71,13 @@ public class ForumNotificationMgr : ApplicationEventHandler
     {
         List<string> recipients = new List<string>();
 
+        // get the orginal post author.
+        var topicAuthorEmail = GetAuthorEmail(item, mbrHelper);
+        if (!string.IsNullOrWhiteSpace(topicAuthorEmail))
+        {
+            recipients.Add(topicAuthorEmail);
+        }
+
         foreach(var childPost in item.Children().Where(x => x.IsVisible()))
         {
             var postAuthorEmail = GetAuthorEmail(childPost, mbrHelper);
