@@ -19,14 +19,14 @@
 
 
 @{
-    Html.EnableClientValidation(true);
-    Html.EnableUnobtrusiveJavaScript(true);
+    // Html.EnableClientValidation(true);
+    // Html.EnableUnobtrusiveJavaScript(true);
 }
 
 @using (Html.BeginUmbracoForm<SimpilyAuthSurfaceController>("HandleRegister", null, new { @class = "form-horizontal forum-reply-form" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(SimpleAuth.RegisterKey, true)
+    @Html.ValidationSummary(SimpilyAuth.RegisterKey, true)
     
     <fieldset>
         <legend>Register</legend>

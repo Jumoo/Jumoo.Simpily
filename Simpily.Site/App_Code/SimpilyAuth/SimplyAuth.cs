@@ -22,7 +22,7 @@ namespace SimpilyAuth
         public const string LoginView = "SimpilyAuth/SimpilyAuth.Login";
         public const string LoginKey = "LoginForm";
 
-        public const string ResetPasswordView = "SimpleAuth.ResetPassword";
+        public const string ResetPasswordView = "SimpilyAuth/SimpilyAuth.ResetPassword";
         public const string ResetPasswordKey = "ResetPasswordForm";
 
         public const string RegisterView = "SimpilyAuth/SimpilyAuth.Register";

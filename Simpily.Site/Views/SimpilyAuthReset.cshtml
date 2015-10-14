@@ -1,6 +1,6 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
-    Layout = "SimpleAuth.cshtml";
+    Layout = "SimpilyAuth.cshtml";
 }
 
 @{
@@ -8,10 +8,10 @@
 
     if (string.IsNullOrWhiteSpace(resetGuid))
     {
-        @Html.Action("RenderForgotPassword", "SimpleAuthSurface")
+        @Html.Action("RenderForgotPassword", "SimpilyAuthSurface")
     }
     else
     {
-        @Html.Action("RenderResetPassword", "SimpleAuthSurface")
+        @Html.Action("RenderResetPassword", "SimpilyAuthSurface")
     }
 }
